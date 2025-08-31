@@ -1,19 +1,10 @@
-FROM python:3.9-slim
-
-ENV DEBIAN_FRONTEND=noninteractive
+FROM python:3.9-alpine
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-    gcc \
-    libgpiod3 \
-    libgpiod-dev \
-    python3-dev \
-    build-essential \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache i2c-tools
 
-RUN pip install --no-cache-dir paho-mqtt smbus
+RUN pip install --no-cache-dir paho-mqtt smbus2
 
 ADD bh1750.py .
 

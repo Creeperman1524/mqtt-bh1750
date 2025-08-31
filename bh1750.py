@@ -6,11 +6,11 @@ import sys
 import time
 
 import paho.mqtt.client as mqtt
-import smbus
+from smbus2 import SMBus
 
 DEVICE = 0x23  # Default device I2C address
 ONE_TIME_HIGH_RES_MODE_2 = 0x21  # Start measurement at 1lx resolution
-bus = smbus.SMBus(1)  # Rev 2 Pi uses 1
+bus = SMBus(1)  # Rev 2 Pi uses 1
 
 
 class MQTTControl:
@@ -85,7 +85,7 @@ class MQTTControl:
 
     def readLight(self, addr=DEVICE):
         # Read data from I2C interface
-        data = bus.read_i2c_block_data(addr, ONE_TIME_HIGH_RES_MODE_2)
+        data = bus.read_i2c_block_data(addr, ONE_TIME_HIGH_RES_MODE_2, 2)
         return self.convertToNumber(data)
 
     def calculateBrightness(self, lux):
